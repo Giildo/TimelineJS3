@@ -240,6 +240,18 @@ export class TimeMarker {
 		this._el.timespan_content = DOM.create("div", "tl-timemarker-timespan-content", this._el.timespan);
 		this._el.content_container = DOM.create("div", "tl-timemarker-content-container", this._el.container);
 
+		/**
+		 * Dispatch custom event to listen the click event on the marker
+		 */
+		if (this.options.headless) {
+			this._el.content_container.addEventListener("click", (e) => {
+				e.target.dispatchEvent(new CustomEvent('event-click', {
+					bubbles: true,
+					detail: { event: this.data }
+				}));
+			});
+		}
+
 		this._el.content = DOM.create("div", "tl-timemarker-content", this._el.content_container);
 
 		this._el.line_left = DOM.create("div", "tl-timemarker-line-left", this._el.timespan);

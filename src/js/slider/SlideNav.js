@@ -66,10 +66,13 @@ export class SlideNav {
 
 		if (slide instanceof Slide) {
 			d.date = slide.getFormattedDate()
-			d.title = slide.data?.text?.headline || ''
+			if (slide.data.text) {
+				if (slide.data.text.headline) {
+					d.title = slide.data.text.headline
+				}
+			}
 		} else {
 			d.date = Slide.prototype.getFormattedDate()
-			console.log(slide)
 		}
 
 		this._update(d)
@@ -89,6 +92,13 @@ export class SlideNav {
 	================================================== */
 	_onMouseClick() {
 		this.fire("clicked", this.options);
+
+		if (this.options.headless) {
+			this._el.container.dispatchEvent(new CustomEvent('slidenav-click', {
+				bubbles: true,
+				detail: { direction: this.options.direction}
+			}));
+		}
 	}
 
 	/*	Private Methods

@@ -462,17 +462,26 @@ class Timeline {
 
         if (this.options.headless) {
             // Create Navigation icons
-            this._el.next = new SlideNav({ title: 'Next', description: 'description' }, { direction: 'next' })
+            this._el.next = new SlideNav(
+              { title: 'Next', description: 'description' },
+              { direction: 'next', headless: this.options.headless }
+            )
             this._el.next.addTo(this._el.container)
-            const iconNextHeight = this._el.next._el.icon.getBoundingClientRect()?.height || 0
+            let iconNextHeight = this._el.next._el.icon.getBoundingClientRect() || 0
+            if (iconNextHeight) {
+                iconNextHeight = iconNextHeight.height
+            }
             this._el.next.setPosition({ top: Math.ceil(this.options.timenav_height) / 2 - iconNextHeight })
 
             this._el.previous = new SlideNav(
               { title: 'Previous', description: 'description' },
-              { direction: 'previous' },
+              { direction: 'previous', headless: this.options.headless },
             )
             this._el.previous.addTo(this._el.container)
-            const iconPreviousHeight = this._el.previous._el.icon.getBoundingClientRect()?.height || 0
+            let iconPreviousHeight = this._el.previous._el.icon.getBoundingClientRect() || 0
+            if (iconPreviousHeight) {
+                iconPreviousHeight = iconPreviousHeight.height
+            }
             this._el.previous.setPosition({ top: Math.ceil(this.options.timenav_height) / 2 - iconPreviousHeight, left: 50 })
         }
 
