@@ -123,8 +123,8 @@ export class StorySlider {
     }
 
     _createSlides(array) {
-        for (var i = 0; i < array.length; i++) {
-            if (array[i].unique_id == "") {
+        for (let i = 0; i < array.length; i++) {
+            if (array[i].unique_id === "") {
                 array[i].unique_id = unique_ID(6, "tl-slide");
             }
             this._createSlide(array[i], false, -1);

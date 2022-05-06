@@ -12,6 +12,8 @@ import { TimeNav } from "../timenav/TimeNav"
 import * as Browser from "../core/Browser"
 import { Animate } from "../animation/Animate"
 import { StorySlider } from "../slider/StorySlider"
+import { SlideNav } from '../slider/SlideNav'
+import { Slide } from '../slider/Slide'
 import { MenuBar } from "../ui/MenuBar"
 import { loadCSS, loadJS } from "../core/Load";
 
@@ -458,10 +460,26 @@ class Timeline {
         // Set TimeNav Height
         this.options.timenav_height = this._calculateTimeNavHeight(this.options.timenav_height);
 
+        if (this.options.headless) {
+            // Create Navigation icons
+            this._el.next = new SlideNav({ title: 'Next', description: 'description' }, { direction: 'next' })
+            this._el.next.addTo(this._el.container)
+            const iconNextHeight = this._el.next._el.icon.getBoundingClientRect()?.height || 0
+            this._el.next.setPosition({ top: Math.ceil(this.options.timenav_height) / 2 - iconNextHeight })
+
+            this._el.previous = new SlideNav(
+              { title: 'Previous', description: 'description' },
+              { direction: 'previous' },
+            )
+            this._el.previous.addTo(this._el.container)
+            const iconPreviousHeight = this._el.previous._el.icon.getBoundingClientRect()?.height || 0
+            this._el.previous.setPosition({ top: Math.ceil(this.options.timenav_height) / 2 - iconPreviousHeight, left: 50 })
+        }
+
         // Create TimeNav
-        this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language);
-        this._timenav.on('loaded', this._onTimeNavLoaded, this);
-        this._timenav.options.height = this.options.timenav_height;
+        this._timenav = new TimeNav(this._el.timenav, this.config, this.options, this.language)
+        this._timenav.on('loaded', this._onTimeNavLoaded, this)
+        this._timenav.options.height = this.options.timenav_height
         this._timenav.init();
 
         // intial_zoom cannot be applied before the timenav has been created
@@ -491,6 +509,10 @@ class Timeline {
 
         // Update Display
         this._updateDisplay(this._timenav.options.height, true, 2000);
+
+        if (this.options.headless) {
+            this._updateNavText()
+        }
     }
 
 
@@ -510,6 +532,9 @@ class Timeline {
             this._storyslider.on('colorchange', this._onColorChange, this);
             this._storyslider.on('nav_next', this._onStorySliderNext, this);
             this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
+        } else {
+            this._el.next.on('clicked', this._onNavigation, this)
+            this._el.previous.on('clicked', this._onNavigation, this)
         }
 
         // Menubar Events
@@ -877,6 +902,44 @@ class Timeline {
             window.history.replaceState(null, "Browsing TimelineJS", hash);
             this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
         }
+    }
+
+    /**
+     * Update the text and the date of the nav button.
+     *
+     * @private
+     */
+    _updateNavText() {
+        if (this.options.headless) {
+            this._el.next.update(
+              new Slide(
+                this.config.events[this._getSlideIndex(this.current_id)],
+                this.options,
+                false,
+                this.getLanguage(),
+              ),
+            )
+            this._el.previous.update(
+              new Slide(
+                this.config.events[this._getSlideIndex(this.current_id) - 2],
+                this.options,
+                false,
+                this.getLanguage(),
+              ),
+            )
+        }
+    }
+
+    _onNavigation(e) {
+        if (e.direction === "next" || e.direction === "left") {
+            this.goToNext();
+        } else if (e.direction === "previous" || e.direction === "right") {
+            this.goToPrev();
+        }
+
+        this._updateNavText()
+
+        this.fire("nav_" + e.direction, this.data);
     }
 
 

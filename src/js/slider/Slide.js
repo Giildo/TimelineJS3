@@ -217,7 +217,7 @@ export class Slide {
         if (trim(this.data.display_date).length > 0) {
             return this.data.display_date;
         }
-        var date_text = "";
+        let date_text = "";
 
         if (!this.has.title) {
             if (this.data.end_date) {

@@ -192,14 +192,14 @@ export const TLDate = TLClass.extend({
         if (!language) {
             language = Language.fallback;
         }
-        if (language.constructor != Language) {
+        if (language.constructor !== Language) {
             trace(
                 "First argument to getDisplayDate must be type Language"
             );
             language = Language.fallback;
         }
 
-        var format_key = format || this.data.format;
+        const format_key = format || this.data.format;
         return language.formatDate(this.data.date_obj, format_key);
     },
 
