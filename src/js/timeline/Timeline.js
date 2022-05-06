@@ -649,7 +649,7 @@ class Timeline {
         if (this.options.timenav_position === "top") {
             menu_position = (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (39 / 2);
         } else {
-            menu_position = Math.round(this.options.storyslider_height + 1 + (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (35 / 2));
+            menu_position = Math.round((this.options.storyslider_height || 0) + 1 + (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (35 / 2));
         }
 
         if (animate) {
