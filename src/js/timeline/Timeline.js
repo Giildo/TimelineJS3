@@ -26,18 +26,18 @@ if (document) {
 function make_keydown_handler(timeline) {
     return function(event) {
         if (timeline.config) {
-            var keyName = event.key;
-            var currentSlide = timeline._getSlideIndex(self.current_id);
-            var _n = timeline.config.events.length - 1;
-            var lastSlide = timeline.config.title ? _n + 1 : _n;
-            var firstSlide = 0;
+            const keyName = event.key;
+            const currentSlide = timeline._getSlideIndex(self.current_id);
+            const _n = timeline.config.events.length - 1;
+            const lastSlide = timeline.config.title ? _n + 1 : _n;
+            const firstSlide = 0;
 
-            if (keyName == 'ArrowLeft') {
-                if (currentSlide != firstSlide) {
+            if (keyName === 'ArrowLeft') {
+                if (currentSlide !== firstSlide) {
                     timeline.goToPrev();
                 }
-            } else if (keyName == 'ArrowRight') {
-                if (currentSlide != lastSlide) {
+            } else if (keyName === 'ArrowRight') {
+                if (currentSlide !== lastSlide) {
                     timeline.goToNext();
                 }
             }
@@ -48,16 +48,16 @@ function make_keydown_handler(timeline) {
 /**
  * Primary entry point for using TimelineJS.
  * @constructor
- * @param {HTMLElement|string} elem - the HTML element, or its ID, to which 
+ * @param {HTMLElement|string} elem - the HTML element, or its ID, to which
  *     the Timeline should be bound
  * @param {object|String} - a JavaScript object conforming to the TimelineJS
  *     configuration format, or a String which is the URL for a Google Sheets document
  *     or JSON configuration file which Timeline will retrieve and parse into a JavaScript object.
- *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a 
+ *     NOTE: do not pass a JSON String for this. TimelineJS doesn't try to distinguish a
  *     JSON string from a URL string. If you have a JSON String literal, parse it using
  *     `JSON.parse` before passing it to the constructor.
  *
- * @param {object} [options] - a JavaScript object specifying 
+ * @param {object} [options] - a JavaScript object specifying
  *     presentation options
  */
 class Timeline {
@@ -80,8 +80,10 @@ class Timeline {
         /** @type {Language} */
         this.language = fallback;
 
-        /** @type {StorySlider} */
-        this._storyslider = {};
+        if (!options.headless) {
+            /** @type {StorySlider} */
+            this._storyslider = {};
+        }
 
         /** @type {TimeNav} */
         this._timenav = {};
@@ -96,67 +98,68 @@ class Timeline {
         this.config = null;
 
         this.options = {
-            script_path: "https://cdn.knightlab.com/libs/timeline3/latest/js/", // as good a default as any
-            height: this._el.container.offsetHeight,
-            width: this._el.container.offsetWidth,
+            base_class: "tl-timeline", // removing tl-timeline will break all default stylesheets...
             debug: false,
+            default_bg_color: { r: 255, g: 255, b: 255 },
+            dragging: true, // interaction
+            duration: 1000, // animation
+            ease: easeInOutQuint,
             font: 'default',
+            ga_property_id: null,
+            hash_bookmark: false,
+            headless: false,
+            height: this._el.container.offsetHeight,
             is_embed: false,
             is_full_embed: false,
-            hash_bookmark: false,
-            default_bg_color: { r: 255, g: 255, b: 255 },
-            scale_factor: 2, // How many screen widths wide should the timeline be
-            layout: "landscape", // portrait or landscape
-            timenav_position: "bottom", // timeline on top or bottom
-            optimal_tick_width: 60, // optimal distance (in pixels) between ticks on axis
-            base_class: "tl-timeline", // removing tl-timeline will break all default stylesheets...
-            timenav_height: null,
-            timenav_height_percentage: 25, // Overrides timenav height as a percentage of the screen
-            timenav_mobile_height_percentage: 40, // timenav height as a percentage on mobile devices
-            timenav_height_min: 175, // Minimum timenav height
-            marker_height_min: 30, // Minimum Marker Height
-            marker_width_min: 100, // Minimum Marker Width
-            marker_padding: 5, // Top Bottom Marker Padding
-            start_at_slide: 0,
-            start_at_end: false,
-            menubar_height: 0,
-            skinny_size: 650,
-            medium_size: 800,
-            use_bc: false, // Use declared suffix on dates earlier than 0
-            // animation
-            duration: 1000,
-            ease: easeInOutQuint,
-            // interaction
-            dragging: true,
-            trackResize: true,
-            map_type: "stamen:toner-lite",
-            slide_padding_lr: 100, // padding on slide of slide
-            slide_default_fade: "0%", // landscape fade
-            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
             language: "en",
-            ga_property_id: null,
-            track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
-            theme: null,
+            layout: "landscape", // portrait or landscape
+            map_type: "stamen:toner-lite",
+            marker_height_min: 30, // Minimum Marker Height
+            marker_padding: 5, // Top Bottom Marker Padding
+            marker_width_min: 100, // Minimum Marker Width
+            medium_size: 800,
+            menubar_height: 0,
+            optimal_tick_width: 60, // optimal distance (in pixels) between ticks on axis
+            scale_factor: 2, // How many screen widths wide should the timeline be
+            script_path: "https://cdn.knightlab.com/libs/timeline3/latest/js/", // as good a default as any
             // sheets_proxy value should be suitable for simply postfixing with the Google Sheets CSV URL
             // as in include trailing slashes, or '?url=' or whatever. No support right now for anything but
             // postfixing. The default proxy should work in most cases, but only for TimelineJS sheets.
             sheets_proxy: 'https://sheets-proxy.knightlab.com/proxy/',
+            skinny_size: 650,
+            slide_default_fade: "0%", // landscape fade
+            slide_padding_lr: 100, // padding on slide of slide
             soundcite: false,
+            start_at_end: false,
+            start_at_slide: 0,
+            theme: null,
+            timenav_height: null,
+            timenav_height_min: 175, // Minimum timenav height
+            timenav_height_percentage: 25, // Overrides timenav height as a percentage of the screen
+            timenav_mobile_height_percentage: 40, // timenav height as a percentage on mobile devices
+            timenav_position: "bottom", // timeline on top or bottom
+            trackResize: true,
+            track_events: ['back_to_start', 'nav_next', 'nav_previous', 'zoom_in', 'zoom_out'],
+            use_bc: false, // Use declared suffix on dates earlier than 0
+            width: this._el.container.offsetWidth,
+            zoom_sequence: [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89], // Array of Fibonacci numbers for TimeNav zoom levels
         };
 
         // Animation Objects
         this.animator_timenav = null;
-        this.animator_storyslider = null;
+        if (!options.headless) {
+            this.animator_storyslider = null;
+        }
         this.animator_menubar = null;
 
         // Ideally we'd set the language here, but we're bootstrapping and may hit problems
-        // before we're able to load it. if it weren't a remote resource, we could probably 
+        // before we're able to load it. if it weren't a remote resource, we could probably
         // do it.
         this.message = new Message(this._el.container, { message_class: "tl-message-full" });
 
         // Merge Options
         if (typeof(options.default_bg_color) == "string") {
-            var parsed = hexToRgb(options.default_bg_color); // will clear it out if its invalid
+            const parsed = hexToRgb(options.default_bg_color); // will clear it out if its invalid
             if (parsed) {
                 options.default_bg_color = parsed;
             } else {
@@ -203,16 +206,22 @@ class Timeline {
         }
 
         this._loadLanguage(data);
-
     }
 
+    /**
+     * If the user has specified a font or theme, load the appropriate CSS file.
+     * If not, use the defaults.
+     */
     _loadStyles() {
         let font_css_url = null,
             theme_css_url = null;
 
-        if (this.options.font && (
-                this.options.font.indexOf('http') == 0 ||
-                this.options.font.match(/\.css$/))) {
+        if (
+          this.options.font && (
+            this.options.font.indexOf('http') === 0 ||
+            this.options.font.match(/\.css$/)
+          )
+        ) {
             font_css_url = this.options.font
         } else if (this.options.font) {
             let fragment = '../css/fonts/font.' + this.options.font.toLowerCase() + '.css'
@@ -223,9 +232,12 @@ class Timeline {
             loadCSS(font_css_url)
         }
 
-        if (this.options.theme && (
-                this.options.theme.indexOf('http') == 0 ||
-                this.options.theme.match(/\.css$/))) {
+        if (
+          this.options.theme && (
+            this.options.theme.indexOf('http') === 0 ||
+            this.options.theme.match(/\.css$/)
+          )
+        ) {
             theme_css_url = this.options.theme
         } else if (this.options.theme) {
             let fragment = '../css/themes/timeline.theme.' + this.options.theme.toLowerCase() + '.css'
@@ -235,15 +247,18 @@ class Timeline {
         if (theme_css_url) {
             loadCSS(theme_css_url)
         }
-
-
     }
 
-
+    /**
+     * It loads the language file for the language specified in the options, and then calls the `_initData` function.
+     * If no language is specified, it will default to English.
+     *
+     * @param data - the data to be loaded into the timeline (events, title, etc)
+     */
     _loadLanguage(data) {
         try {
-            var lang = this.options.language
-            var script_path = this.options.script_path
+            const lang = this.options.language
+            const script_path = this.options.script_path
             loadLanguage(lang, script_path).then((language) => {
                 if (language) {
                     this.language = language
@@ -262,19 +277,19 @@ class Timeline {
 
     /**
      * Initialize the data for this timeline. If data is a URL, pass it to ConfigFactory
-     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise, 
+     * to get a TimelineConfig; if data is a TimelineConfig, just use it; otherwise,
      * assume it's a JSON object in the right format, and wrap it in a new TimelineConfig.
      * @param {string|TimelineConfig|object} data
      */
     _initData(data) {
-        if (typeof data == 'string') {
+        if (typeof data === 'string') {
             makeConfig(data, {
                 callback: function(config) {
                     this.setConfig(config);
                 }.bind(this),
                 sheets_proxy: this.options.sheets_proxy
             });
-        } else if (TimelineConfig == data.constructor) {
+        } else if (TimelineConfig === data.constructor) {
             this.setConfig(data);
         } else {
             this.setConfig(new TimelineConfig(data));
@@ -283,14 +298,13 @@ class Timeline {
 
     /**
      * Given an input, if it is a Timeline Error object, look up the
-     * appropriate error in the current language and return it, optionally 
+     * appropriate error in the current language and return it, optionally
      * with detail that also comes in the object. Alternatively, pass back
      * the input, which is expected to be a string ready to display.
-     * @param {Error|string} e - an Error object which can be localized, 
+     * @param {Error|string} e - an Error object which can be localized,
      *     or a string message
      */
     _translateError(e) {
-
         if (e.hasOwnProperty('stack')) {
             trace(e.stack);
         }
@@ -298,25 +312,25 @@ class Timeline {
             return this._(e.message_key) + (e.detail ? ' [' + e.detail + ']' : '')
         }
         return e;
-
     }
 
     /**
      * Display a message in the Timeline window.
-     * @param {string} msg 
+     * @param {string} msg
      */
-    showMessage(msg) {
-            if (this.message) {
-                this.message.updateMessage(msg);
-            } else {
-                trace("No message display available.")
-                trace(msg);
-            }
+    showMessage (msg) {
+        if (this.message) {
+            this.message.updateMessage(msg)
+        } else {
+            trace('No message display available.')
+            trace(msg)
         }
-        /**
-         * Not ideal, but if users don't specify the script path, we try to figure it out.
-         * The script path is needed to load other languages
-         */
+    }
+
+    /**
+     * Not ideal, but if users don't specify the script path, we try to figure it out.
+     * The script path is needed to load other languages
+     */
     determineScriptPath() {
         let src = null;
         if (script_src_url) { // did we get it when this loaded?
@@ -339,13 +353,20 @@ class Timeline {
         }
 
         if (src) {
-            // +1 to include the trailing slash or concatting for dynamic CSS load won't work.
-            return src.substr(0, src.lastIndexOf('/') + 1);
+            // +1 to include the trailing slash or concatting for dynamic CSS load won't work. Use substring because substr is deprecated
+            return src.substring(0, src.lastIndexOf('/') + 1);
         }
         return '';
     }
 
 
+    /**
+     * The function `setConfig` is called when the user clicks the "Run" button. It takes the user's input and validates
+     * it. If the input is valid, it calls the function `_onDataLoaded` which is defined in the same file. If the input is
+     * invalid, it displays an error message.
+     *
+     * @param config - The configuration object.
+     */
     setConfig(config) {
         this.config = config;
         if (this.config.isValid()) {
@@ -364,9 +385,9 @@ class Timeline {
                 this.showMessage("<strong>" + this._('error') + ":</strong> " + this._translateError(e));
             }
         } else {
-            var translated_errs = [];
+            const translated_errs = [];
 
-            for (var i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
+            for (let i = 0, errs = this.config.getErrors(); i < errs.length; i++) {
                 translated_errs.push(this._translateError(errs[i]));
             }
 
@@ -377,6 +398,13 @@ class Timeline {
         }
     }
 
+    /**
+     * _onDataLoaded() is a function that fires the event "dataloaded", initializes the layout, initializes the events,
+     * initializes the analytics, hides the message, and then creates an intersection observer that updates the display
+     * when the container is intersecting.
+     *
+     * @private
+     */
     _onDataLoaded() {
         this.fire("dataloaded");
         this._initLayout();
@@ -394,26 +422,33 @@ class Timeline {
         observer.observe(this._el.container)
         this.ready = true;
         this.fire("ready")
-
     }
 
+    /**
+     * _initLayout() is a function that creates the layout of the timeline.
+     *
+     * @private
+     */
     _initLayout() {
-        var self = this;
-
-        this.message.removeFrom(this._el.container);
-        this._el.container.innerHTML = "";
+        this.message.removeFrom(this._el.container)
+        this._el.container.innerHTML = ''
 
         // Create Layout
-        if (this.options.timenav_position == "top") {
-            this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
-            this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
+        if (this.options.timenav_position === 'top') {
+            this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container)
+
+            if (!this.options.headless) {
+                this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container)
+            }
         } else {
-            this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container);
-            this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container);
+            if (!this.options.headless) {
+                this._el.storyslider = DOM.create('div', 'tl-storyslider', this._el.container)
+            }
+
+            this._el.timenav = DOM.create('div', 'tl-timenav', this._el.container)
         }
 
         this._el.menubar = DOM.create('div', 'tl-menubar', this._el.container);
-
 
         // Initial Default Layout
         this.options.width = this._el.container.offsetWidth;
@@ -435,43 +470,52 @@ class Timeline {
             this.setZoom(this.options.initial_zoom);
         }
 
-        // Create StorySlider
-        this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
-        this._storyslider.on('loaded', this._onStorySliderLoaded, this);
-        this._storyslider.init();
+        if (!this.options.headless) {
+            // Create StorySlider
+            this._storyslider = new StorySlider(this._el.storyslider, this.config, this.options, this.language);
+            this._storyslider.on('loaded', this._onStorySliderLoaded, this);
+            this._storyslider.init();
+        }
 
         // Create Menu Bar
         this._menubar = new MenuBar(this._el.menubar, this._el.container, this.options);
 
-        // LAYOUT
-        if (this.options.layout == "portrait") {
-            this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
-        } else {
-            this.options.storyslider_height = (this.options.height - 1);
+        if (!this.options.headless) {
+            // LAYOUT
+            if (this.options.layout === "portrait") {
+                this.options.storyslider_height = (this.options.height - this.options.timenav_height - 1);
+            } else {
+                this.options.storyslider_height = (this.options.height - 1);
+            }
         }
-
 
         // Update Display
         this._updateDisplay(this._timenav.options.height, true, 2000);
-
     }
 
+
+    /**
+     * _initEvents() is a function that initializes the events for the TimeNav, StorySlider, and Menubar
+     *
+     * @private
+     */
     _initEvents() {
         // TimeNav Events
         this._timenav.on('change', this._onTimeNavChange, this);
         this._timenav.on('zoomtoggle', this._onZoomToggle, this);
 
-        // StorySlider Events
-        this._storyslider.on('change', this._onSlideChange, this);
-        this._storyslider.on('colorchange', this._onColorChange, this);
-        this._storyslider.on('nav_next', this._onStorySliderNext, this);
-        this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
+        if (!this.options.headless) {
+            // StorySlider Events
+            this._storyslider.on('change', this._onSlideChange, this);
+            this._storyslider.on('colorchange', this._onColorChange, this);
+            this._storyslider.on('nav_next', this._onStorySliderNext, this);
+            this._storyslider.on('nav_previous', this._onStorySliderPrevious, this);
+        }
 
         // Menubar Events
         this._menubar.on('zoom_in', this._onZoomIn, this);
         this._menubar.on('zoom_out', this._onZoomOut, this);
         this._menubar.on('back_to_start', this._onBackToStart, this);
-
     }
 
     _onColorChange(e) {
@@ -479,7 +523,7 @@ class Timeline {
     }
 
     _onSlideChange(e) {
-        if (this.current_id != e.unique_id) {
+        if (this.current_id !== e.unique_id) {
             this.current_id = e.unique_id;
             this._timenav.goToId(this.current_id);
             this._onChange(e);
@@ -487,23 +531,23 @@ class Timeline {
     }
 
     _onTimeNavChange(e) {
-        if (this.current_id != e.unique_id) {
+        if (this.current_id !== e.unique_id) {
             this.current_id = e.unique_id;
-            this._storyslider.goToId(this.current_id);
+            if (!this.options.headless) {
+                this._storyslider.goToId(this.current_id);
+            }
             this._onChange(e);
         }
     }
 
     _onZoomToggle(e) {
-        if (e.zoom == "in") {
+        if (e.zoom === "in") {
             this._menubar.toogleZoomIn(e.show);
-        } else if (e.zoom == "out") {
+        } else if (e.zoom === "out") {
             this._menubar.toogleZoomOut(e.show);
         }
 
     }
-
-
 
     _onChange(e) {
         this.fire("change", { unique_id: this.current_id }, this);
@@ -513,7 +557,9 @@ class Timeline {
     }
 
     _onBackToStart(e) {
-        this._storyslider.goTo(0);
+        if (!this.options.headless) {
+            this._storyslider.goTo(0);
+        }
         this.fire("back_to_start", { unique_id: this.current_id }, this);
     }
 
@@ -532,8 +578,10 @@ class Timeline {
         this._onLoaded();
     }
 
-    _onStorySliderLoaded() {
-        this._loaded.storyslider = true;
+    _onStorySliderLoaded () {
+        if (!this.options.headless) {
+            this._loaded.storyslider = true
+        }
         this._onLoaded();
     }
 
@@ -545,12 +593,10 @@ class Timeline {
         this.fire("nav_previous", e);
     }
 
-
     _updateDisplay(timenav_height, animate, d) {
-        var duration = this.options.duration,
+        let duration = this.options.duration,
             display_class = this.options.base_class,
-            menu_position = 0,
-            self = this;
+            menu_position = 0;
 
         if (d) {
             duration = d;
@@ -586,40 +632,40 @@ class Timeline {
         }
 
         // LAYOUT
-        if (this.options.layout == "portrait") {
+        if (this.options.layout === "portrait") {
             // Portrait
             display_class += " tl-layout-portrait";
-
         } else {
             // Landscape
             display_class += " tl-layout-landscape";
-
         }
 
-        // Set StorySlider Height
-        this.options.storyslider_height = (this.options.height - this.options.timenav_height);
+        if (!this.options.headless) {
+            // Set StorySlider Height
+            this.options.storyslider_height = (this.options.height - this.options.timenav_height);
+        }
 
         // Positon Menu
-        if (this.options.timenav_position == "top") {
+        if (this.options.timenav_position === "top") {
             menu_position = (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (39 / 2);
         } else {
             menu_position = Math.round(this.options.storyslider_height + 1 + (Math.ceil(this.options.timenav_height) / 2) - (this._el.menubar.offsetHeight / 2) - (35 / 2));
         }
 
-
         if (animate) {
-
             this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
 
-            // Animate StorySlider
-            if (this.animator_storyslider) {
-                this.animator_storyslider.stop();
+            if (!this.options.headless) {
+                // Animate StorySlider
+                if (this.animator_storyslider) {
+                    this.animator_storyslider.stop();
+                }
+                this.animator_storyslider = Animate(this._el.storyslider, {
+                    height: this.options.storyslider_height + "px",
+                    duration: duration / 2,
+                    easing: easeOutStrong
+                });
             }
-            this.animator_storyslider = Animate(this._el.storyslider, {
-                height: this.options.storyslider_height + "px",
-                duration: duration / 2,
-                easing: easeOutStrong
-            });
 
             // Animate Menubar
             if (this.animator_menubar) {
@@ -636,8 +682,10 @@ class Timeline {
             // TimeNav
             this._el.timenav.style.height = Math.ceil(this.options.timenav_height) + "px";
 
-            // StorySlider
-            this._el.storyslider.style.height = this.options.storyslider_height + "px";
+            if (!this.options.headless) {
+                // StorySlider
+                this._el.storyslider.style.height = this.options.storyslider_height + "px";
+            }
 
             // Menubar
             this._el.menubar.style.top = menu_position + "px";
@@ -648,35 +696,35 @@ class Timeline {
         }
         // Update Component Displays
         this._timenav.updateDisplay(this.options.width, this.options.timenav_height, animate);
-        this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
+        if (!this.options.headless) {
+            this._storyslider.updateDisplay(this.options.width, this.options.storyslider_height, animate, this.options.layout);
+        }
 
-        if (this.options.language.direction == 'rtl') {
+        if (this.options.language.direction === 'rtl') {
             display_class += ' tl-rtl';
         }
 
-
         // Apply class
         this._el.container.className = display_class;
-
     }
 
     /**
-     * Compute the height of the navigation section of the Timeline, taking 
-     *     into account the possibility of an explicit height or height 
-     *     percentage, but also honoring the `timenav_height_min` option 
-     *     value. If `timenav_height` is specified it takes precedence over 
-     *     `timenav_height_percentage` but in either case, if the resultant 
-     *     pixel height is less than `options.timenav_height_min` then the 
-     *     value of `options.timenav_height_min` will be returned. (A minor 
-     *     adjustment is made to the returned value to account for marker 
+     * Compute the height of the navigation section of the Timeline, taking
+     *     into account the possibility of an explicit height or height
+     *     percentage, but also honoring the `timenav_height_min` option
+     *     value. If `timenav_height` is specified it takes precedence over
+     *     `timenav_height_percentage` but in either case, if the resultant
+     *     pixel height is less than `options.timenav_height_min` then the
+     *     value of `options.timenav_height_min` will be returned. (A minor
+     *     adjustment is made to the returned value to account for marker
      *     padding.)
-     * 
+     *
      * @param {number} [timenav_height] - an integer value for the desired height in pixels
      * @param {number} [timenav_height_percentage] - an integer between 1 and 100
+     * @private
      */
     _calculateTimeNavHeight(timenav_height, timenav_height_percentage) {
-
-        var height = 0;
+        let height = 0;
 
         if (timenav_height) {
             height = timenav_height;
@@ -708,21 +756,33 @@ class Timeline {
         return height;
     }
 
-    _validateOptions() {
+    /**
+     * It checks to see if the options passed in are valid.
+     *
+     * @private
+     */
+    _validateOptions () {
         // assumes that this.options and this.config have been set.
-        var INTEGER_PROPERTIES = ['timenav_height', 'timenav_height_min', 'marker_height_min', 'marker_width_min', 'marker_padding', 'start_at_slide', 'slide_padding_lr'];
+        const INTEGER_PROPERTIES = [
+            'timenav_height',
+            'timenav_height_min',
+            'marker_height_min', 'marker_width_min',
+            'marker_padding',
+            'start_at_slide',
+            'slide_padding_lr',
+        ]
 
-        for (var i = 0; i < INTEGER_PROPERTIES.length; i++) {
-            var opt = INTEGER_PROPERTIES[i];
-            var value = this.options[opt];
-            let valid = true;
-            if (typeof(value) == 'number') {
-                valid = (value == parseInt(value))
-            } else if (typeof(value) == "string") {
-                valid = (value.match(/^\s*(\-?\d+)?\s*$/));
+        for (let i = 0; i < INTEGER_PROPERTIES.length; i++) {
+            const opt = INTEGER_PROPERTIES[i]
+            const value = this.options[opt]
+            let valid = true
+            if (typeof (value) == 'number') {
+                valid = (value === parseInt(value))
+            } else if (typeof (value) == 'string') {
+                valid = (value.match(/^\s*(-?\d+)?\s*$/))
             }
             if (!valid) {
-                this.config.logError({ message_key: 'invalid_integer_option', detail: opt });
+                this.config.logError({ message_key: 'invalid_integer_option', detail: opt })
             }
         }
     }
@@ -730,17 +790,19 @@ class Timeline {
     /**
      * Given a slide identifier, return the zero-based positional index of
      * that slide. If this timeline has a 'title' slide, it is at position 0
-     * and all other slides are numbered after that. If there is no 'title' 
+     * and all other slides are numbered after that. If there is no 'title'
      * slide, then the first event slide is at position 0.
-     * @param {String} id 
+     *
+     * @param {String} id
+     * @private
      */
     _getSlideIndex(id) {
         if (this.config) {
-            if (this.config.title && this.config.title.unique_id == id) {
+            if (this.config.title && this.config.title.unique_id === id) {
                 return 0;
             }
-            for (var i = 0; i < this.config.events.length; i++) {
-                if (id == this.config.events[i].unique_id) {
+            for (let i = 0; i < this.config.events.length; i++) {
+                if (id === this.config.events[i].unique_id) {
                     return this.config.title ? i + 1 : i;
                 }
             }
@@ -752,22 +814,33 @@ class Timeline {
      * Given a slide identifier, return the zero-based positional index of that slide.
      * Does not take the existence of a 'title' slide into account, so if there is a title
      * slide, this value should be one less than calling `_getSlideIndex` with the same
-     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex` 
+     * identifier. If there is no title slide, `_getSlideIndex` and `_getEventIndex`
      * should return the same value.
      * TODO: does it really make sense to have both `_getSlideIndex` and `_getEventIndex`?
-     * @param {String} id 
+     *
+     * @param {String} id
+     * @private
      */
     _getEventIndex(id) {
-        for (var i = 0; i < this.config.events.length; i++) {
-            if (id == this.config.events[i].unique_id) {
+        for (let i = 0; i < this.config.events.length; i++) {
+            if (id === this.config.events[i].unique_id) {
                 return i;
             }
         }
         return -1;
     }
 
+    /**
+     * Function called when the timeline is loaded.
+     * It sets the first slide to be displayed.
+     * If the hash_bookmark option is true:
+     * - if a hash is in URL display the slide with the matching ID
+     * - if no hash is in URL, display the first slide and set the hash
+     *
+     * @private
+     */
     _onLoaded() {
-        if (this._loaded.storyslider && this._loaded.timenav) {
+        if ((this._loaded.storyslider || this.options.headless) && this._loaded.timenav) {
             this.fire("loaded", this.config);
             // Go to proper slide
             if (isTrue(this.options.start_at_end) || this.options.start_at_slide > this.config.events.length) {
@@ -776,14 +849,14 @@ class Timeline {
                 this.goTo(this.options.start_at_slide);
             }
             if (this.options.hash_bookmark) {
-                if (window.location.hash != "") {
+                if (window.location.hash !== "") {
                     this.goToId(window.location.hash.replace("#event-", ""));
                 } else {
                     this._updateHashBookmark(this.current_id);
                 }
                 let the_timeline = this;
                 window.addEventListener('hashchange', function() {
-                    if (window.location.hash.indexOf('#event-') == 0) {
+                    if (window.location.hash.indexOf('#event-') === 0) {
                         the_timeline.goToId(window.location.hash.replace("#event-", ""));
                     }
                 }, false);
@@ -792,10 +865,15 @@ class Timeline {
         }
     }
 
-    // Update hashbookmark in the url bar
+    /**
+     * Update hash bookmark in the url bar.
+     *
+     * @param {string} id
+     * @private
+     */
     _updateHashBookmark(id) {
         if (id) { // TODO: validate the id...
-            var hash = "#" + "event-" + id.toString();
+            const hash = "#" + "event-" + id.toString();
             window.history.replaceState(null, "Browsing TimelineJS", hash);
             this.fire("hash_updated", { unique_id: this.current_id, hashbookmark: "#" + "event-" + id.toString() }, this);
         }
@@ -820,21 +898,30 @@ class Timeline {
         this._timenav.setZoom(level);
     }
 
-    // Goto slide with id
+    /**
+     * Goto slide with id
+     *
+     * @param {string} id
+     */
     goToId(id) {
-        if (this.current_id != id) {
-
+        if (this.current_id !== id) {
             this.current_id = id;
             this._timenav.goToId(this.current_id);
-            this._storyslider.goToId(this.current_id, false, true);
+            if (!this.options.headless) {
+                this._storyslider.goToId(this.current_id, false, true);
+            }
             this.fire("change", { unique_id: this.current_id }, this);
         }
     }
 
-    // Goto slide n
+    /**
+     * Goto slide n
+     *
+     * @param {number} n
+     */
     goTo(n) {
         if (this.config.title) {
-            if (n == 0) {
+            if (n === 0) {
                 this.goToId(this.config.title.unique_id);
             } else {
                 this.goToId(this.config.events[n - 1].unique_id);
@@ -844,23 +931,31 @@ class Timeline {
         }
     }
 
-    // Goto first slide
+    /**
+     * Goto first slide
+     */
     goToStart() {
         this.goTo(0);
     }
 
-    // Goto last slide
+    /**
+     * Goto last slide
+     */
     goToEnd() {
-        var _n = this.config.events.length - 1;
+        const _n = this.config.events.length - 1;
         this.goTo(this.config.title ? _n + 1 : _n);
     }
 
-    // Goto previous slide
+    /**
+     * Goto previous slide
+     */
     goToPrev() {
         this.goTo(this._getSlideIndex(this.current_id) - 1);
     }
 
-    // Goto next slide
+    /**
+     * Goto next slide
+     */
     goToNext() {
         this.goTo(this._getSlideIndex(this.current_id) + 1);
     }
@@ -868,15 +963,21 @@ class Timeline {
     /* Event manipulation
     ================================================== */
 
-    // Add an event
+    /**
+     * Add an event
+     *
+     * @param data
+     */
     add(data) {
-        var unique_id = this.config.addEvent(data);
+        const unique_id = this.config.addEvent(data);
 
-        var n = this._getEventIndex(unique_id);
-        var d = this.config.events[n];
+        const n = this._getEventIndex(unique_id);
+        const d = this.config.events[n];
 
-        this._storyslider.createSlide(d, this.config.title ? n + 1 : n);
-        this._storyslider._updateDrawSlides();
+        if (!this.options.headless) {
+            this._storyslider.createSlide(d, this.config.title ? n + 1 : n);
+            this._storyslider._updateDrawSlides();
+        }
 
         this._timenav.createMarker(d, n);
         this._timenav._updateDrawTimeline(false);
@@ -884,11 +985,15 @@ class Timeline {
         this.fire("added", { unique_id: unique_id });
     }
 
-    // Remove an event
+    /**
+     * Remove an event
+     *
+     * @param n
+     */
     remove(n) {
         if (n >= 0 && n < this.config.events.length) {
             // If removing the current, nav to new one first
-            if (this.config.events[n].unique_id == this.current_id) {
+            if (this.config.events[n].unique_id === this.current_id) {
                 if (n < this.config.events.length - 1) {
                     this.goTo(n + 1);
                 } else {
@@ -896,10 +1001,13 @@ class Timeline {
                 }
             }
 
-            var event = this.config.events.splice(n, 1);
+            const event = this.config.events.splice(n, 1);
             delete this.config.event_dict[event[0].unique_id];
-            this._storyslider.destroySlide(this.config.title ? n + 1 : n);
-            this._storyslider._updateDrawSlides();
+
+            if (!this.options.headless) {
+                this._storyslider.destroySlide(this.config.title ? n + 1 : n);
+                this._storyslider._updateDrawSlides();
+            }
 
             this._timenav.destroyMarker(n);
             this._timenav._updateDrawTimeline(false);
@@ -917,7 +1025,7 @@ class Timeline {
 
     getData(n) {
         if (this.config.title) {
-            if (n == 0) {
+            if (n === 0) {
                 return this.config.title;
             } else if (n > 0 && n <= this.config.events.length) {
                 return this.config.events[n - 1];
@@ -936,7 +1044,7 @@ class Timeline {
     ================================================== */
 
     getSlide(n) {
-        if (n >= 0 && n < this._storyslider._slides.length) {
+        if (this._storyslider && n >= 0 && n < this._storyslider._slides.length) {
             return this._storyslider._slides[n];
         }
         return null;
@@ -978,9 +1086,9 @@ class Timeline {
         if (this.options.ga_property_id === null) { return; }
         this._initGoogleAnalytics();
         ga('send', 'pageview');
-        var events = this.options.track_events;
+        const events = this.options.track_events;
         for (let i = 0; i < events.length; i++) {
-            var event_ = events[i];
+            const event_ = events[i];
             this.addEventListener(event_, function(e) {
                 ga('send', 'event', e.type, 'clicked');
             });

@@ -1,8 +1,8 @@
 # WARNING
-# This project includes a .npmignore file which controls 
+# This project includes a .npmignore file which controls
 # what is published to the NPM registry. When editing
 # this file, consider whether the ignored file(s) should
-# also be kept out of the npm registry. 
+# also be kept out of the npm registry.
 # (The answer is probably "yes").
 *.pyc
 node_modules/
@@ -18,3 +18,4 @@ build
 *.log
 dist
 .vscode
+.idea
