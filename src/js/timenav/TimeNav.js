@@ -12,10 +12,7 @@ import { TimeMarker } from "./TimeMarker"
 import Swipable from "../ui/Swipable"
 import { Animate } from "../animation/Animate"
 
-
-
 export class TimeNav {
-
     constructor(elem, timeline_config, options, language) {
         this.language = language // just passing through for TimeAxis. Is this a bad code smell?
             // DOM ELEMENTS
@@ -98,10 +95,9 @@ export class TimeNav {
 
         // Merge Data and Options
         mergeData(this.options, options);
-
     }
 
-    init() {
+    init(test = '') {
         this._initLayout();
         this._initEvents();
         this._initData();
@@ -114,8 +110,8 @@ export class TimeNav {
     ================================================== */
     positionMarkers(fast) {
         // POSITION X
-        for (var i = 0; i < this._markers.length; i++) {
-            var pos = this.timescale.getPositionInfo(i);
+        for (let i = 0; i < this._markers.length; i++) {
+            let pos = this.timescale.getPositionInfo(i);
             if (fast) {
                 this._markers[i].setClass("tl-timemarker tl-timemarker-fast");
             } else {
@@ -123,7 +119,7 @@ export class TimeNav {
             }
             this._markers[i].setPosition({ left: pos.start });
             this._markers[i].setWidth(pos.width);
-        };
+        }
     }
 
     /*	Update Display
@@ -131,12 +127,12 @@ export class TimeNav {
     updateDisplay(width, height, animate) {
         let reposition_markers = false;
         if (width) {
-            if (this.options.width == 0 && width > 0) {
+            if (this.options.width === 0 && width > 0) {
                 reposition_markers = true;
             }
             this.options.width = width;
         }
-        if (height && height != this.options.height) {
+        if (height && height !== this.options.height) {
             this.options.height = height;
             this.timescale = this._getTimeScale();
         }
@@ -166,14 +162,14 @@ export class TimeNav {
         /* maybe the establishing config values (marker_height_min and max_rows) should be
         separated from making a TimeScale object, which happens in another spot in this file with duplicate mapping of properties of this TimeNav into the TimeScale options object? */
         // Set Max Rows
-        var marker_height_min = 0;
+        let marker_height_min = 0;
         try {
             marker_height_min = parseInt(this.options.marker_height_min);
         } catch (e) {
             trace("Invalid value for marker_height_min option.");
             marker_height_min = 30;
         }
-        if (marker_height_min == 0) {
+        if (marker_height_min === 0) {
             trace("marker_height_min option must not be zero.")
             marker_height_min = 30;
         }
@@ -195,17 +191,17 @@ export class TimeNav {
     }
 
     zoomIn() { // move the the next "higher" scale factor
-        var new_scale = findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
+        let new_scale = findNextGreater(this.options.zoom_sequence, this.options.scale_factor);
         this.setZoomFactor(new_scale);
     }
 
     zoomOut() { // move the the next "lower" scale factor
-        var new_scale = findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
+        let new_scale = findNextLesser(this.options.zoom_sequence, this.options.scale_factor);
         this.setZoomFactor(new_scale);
     }
 
     setZoom(level) {
-        var zoom_factor = this.options.zoom_sequence[level];
+        let zoom_factor = this.options.zoom_sequence[level];
         if (typeof(zoom_factor) == 'number') {
             this.setZoomFactor(zoom_factor);
         } else {
@@ -226,7 +222,7 @@ export class TimeNav {
             this.fire("zoomtoggle", { zoom: "in", show: true });
         }
 
-        if (factor == 0) {
+        if (factor === 0) {
             console.warn("Zoom factor must be greater than zero. Using 0.1");
             factor = 0.1;
         }
@@ -239,11 +235,11 @@ export class TimeNav {
     ================================================== */
     _createGroups() {
         this._groups = [];
-        var group_labels = this.timescale.getGroupLabels();
+        let group_labels = this.timescale.getGroupLabels();
 
         if (group_labels) {
             this.options.has_groups = true;
-            for (var i = 0; i < group_labels.length; i++) {
+            for (let i = 0; i < group_labels.length; i++) {
                 this._createGroup(group_labels[i]);
             }
         }
@@ -251,7 +247,7 @@ export class TimeNav {
     }
 
     _createGroup(group_label) {
-        var group = new TimeGroup(group_label);
+        let group = new TimeGroup(group_label);
         this._addGroup(group);
         this._groups.push(group);
     }
@@ -263,13 +259,12 @@ export class TimeNav {
 
     _positionGroups() {
         if (this.options.has_groups) {
-            var available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
-                group_height = Math.floor((available_height / this.timescale.getNumberOfRows()) - this.options.marker_padding),
-                group_labels = this.timescale.getGroupLabels();
+            let available_height = (this.options.height - this._el.timeaxis_background.offsetHeight),
+                group_height = Math.floor((available_height / this.timescale.getNumberOfRows()) - this.options.marker_padding)
 
-            for (var i = 0, group_rows = 0; i < this._groups.length; i++) {
-                var group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
-                var group_hide = false;
+            for (let i = 0, group_rows = 0; i < this._groups.length; i++) {
+                let group_y = Math.floor(group_rows * (group_height + this.options.marker_padding));
+                let group_hide = false;
                 if (group_y > (available_height - this.options.marker_padding)) {
                     group_hide = true;
                 }
@@ -291,7 +286,7 @@ export class TimeNav {
     }
 
     _createMarker(data, n) {
-        var marker = new TimeMarker(data, this.options);
+        let marker = new TimeMarker(data, this.options);
         this._addMarker(marker);
         if (n < 0) {
             this._markers.push(marker);
@@ -301,7 +296,7 @@ export class TimeNav {
     }
 
     _createMarkers(array) {
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             this._createMarker(array[i], -1);
         }
     }
@@ -338,7 +333,7 @@ export class TimeNav {
     }
 
     _assignRowsToMarkers() {
-        var available_height = this._calculateAvailableHeight(),
+        let available_height = this._calculateAvailableHeight(),
             marker_height = this._calculateMarkerHeight(available_height);
 
 
@@ -346,30 +341,29 @@ export class TimeNav {
 
         this._calculated_row_height = this._calculateRowHeight(available_height);
 
-        for (var i = 0; i < this._markers.length; i++) {
+        for (let i = 0; i < this._markers.length; i++) {
 
             // Set Height
             this._markers[i].setHeight(marker_height);
 
             //Position by Row
-            var row = this.timescale.getPositionInfo(i).row;
+            let row = this.timescale.getPositionInfo(i).row;
 
-            var marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
+            let marker_y = Math.floor(row * (marker_height + this.options.marker_padding)) + this.options.marker_padding;
 
-            var remainder_height = available_height - marker_y + this.options.marker_padding;
+            let remainder_height = available_height - marker_y + this.options.marker_padding;
             this._markers[i].setRowPosition(marker_y, remainder_height);
-        };
-
+        }
     }
 
     _resetMarkersActive() {
-        for (var i = 0; i < this._markers.length; i++) {
+        for (let i = 0; i < this._markers.length; i++) {
             this._markers[i].setActive(false);
-        };
+        }
     }
 
     _findMarkerIndex(n) {
-        var _n = -1;
+        let _n = -1;
         if (typeof n == 'string' || n instanceof String) {
             _n = findArrayNumberByUniqueID(n, this._markers, "unique_id", _n);
         }
@@ -379,9 +373,9 @@ export class TimeNav {
     /*	ERAS
     ================================================== */
     _createEras(array) {
-        for (var i = 0; i < array.length; i++) {
-            var data = array[i];
-            var era = new TimeEra(data.start_date,
+        for (let i = 0; i < array.length; i++) {
+            let data = array[i];
+            let era = new TimeEra(data.start_date,
                 data.end_date,
                 data.headline,
                 this.options);
@@ -392,11 +386,10 @@ export class TimeNav {
     }
 
     _positionEras(fast) {
-
-        var era_color = 0;
+        let era_color = 0;
         // POSITION X
-        for (var i = 0; i < this._eras.length; i++) {
-            var pos = {
+        for (let i = 0; i < this._eras.length; i++) {
+            let pos = {
                 start: 0,
                 end: 0,
                 width: 0
@@ -419,8 +412,7 @@ export class TimeNav {
                 era_color = 0;
             }
             this._eras[i].setColor(era_color);
-        };
-
+        }
     }
 
     /*	Public
@@ -449,8 +441,7 @@ export class TimeNav {
     /*	Navigation
     ================================================== */
     goTo(n, fast, css_animation) {
-        var self = this,
-            _ease = this.options.ease,
+        let _ease = this.options.ease,
             _duration = this.options.duration,
             _n = (n < 0) ? 0 : n;
 
@@ -519,8 +510,7 @@ export class TimeNav {
     }
 
     _onMouseScroll(e) {
-
-        var delta = 0,
+        let delta = 0,
             scroll_to = 0,
             constraint = {
                 right: -(this.timescale.getPixelWidth() - (this.options.width / 2)),
@@ -565,7 +555,6 @@ export class TimeNav {
         }
 
         this._el.slider.style.left = scroll_to + "px";
-
     }
 
     _onDragMove(e) {
@@ -573,7 +562,6 @@ export class TimeNav {
             this._el.slider.className = "tl-timenav-slider";
             this.animate_css = false;
         }
-
     }
 
     /*	Private Methods
@@ -594,20 +582,20 @@ export class TimeNav {
     }
 
     _updateDrawTimeline(check_update) {
-        var do_update = false;
+        let do_update = false;
 
         // Check to see if redraw is needed
         if (check_update) {
             /* keep this aligned with _getTimeScale or reduce code duplication */
-            var temp_timescale = new TimeScale(this.config, {
+            let temp_timescale = new TimeScale(this.config, {
                 display_width: this._el.container.offsetWidth,
                 screen_multiplier: this.options.scale_factor,
                 max_rows: this.max_rows
 
             });
 
-            if (this.timescale.getMajorScale() == temp_timescale.getMajorScale() &&
-                this.timescale.getMinorScale() == temp_timescale.getMinorScale()) {
+            if (this.timescale.getMajorScale() === temp_timescale.getMajorScale() &&
+                this.timescale.getMinorScale() === temp_timescale.getMinorScale()) {
                 do_update = true;
             }
         } else {
@@ -648,7 +636,6 @@ export class TimeNav {
         this._el.timeaxis = DOM.create('div', 'tl-timeaxis', this._el.slider);
         this._el.timeaxis_background = DOM.create('div', 'tl-timeaxis-background', this._el.container);
 
-
         // Knight Lab Logo
         this._el.attribution.innerHTML = "<a href='http://timeline.knightlab.com' target='_blank' rel='noopener'><span class='tl-knightlab-logo'></span>TimelineJS</a>"
 
@@ -662,7 +649,6 @@ export class TimeNav {
             snap: false
         });
         this._swipable.enable();
-
     }
 
     _initEvents() {
@@ -684,7 +670,6 @@ export class TimeNav {
         }
 
         this._drawTimeline();
-
     }
 }
 

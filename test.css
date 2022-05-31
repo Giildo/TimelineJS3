@@ -1,0 +1,424 @@
+/*!
+	Timeline JS 3
+
+	Designed and built by Zach Wise for the Northwestern University Knight Lab
+
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+*/
+/* Includes
+================================================== */
+/*	VARIABLES
+	BASE
+----------------------------------------------------- */
+/* ICON PATH
+================================================== */
+/* TYPEFACE
+================================================== */
+/* COLOR SCHEME
+================================================== */
+/* UI COLOR
+================================================== */
+/* UI
+================================================== */
+/* Animation
+================================================== */
+/* GFX
+================================================== */
+/*!
+	Timeline JS 3
+
+	Designed and built by Zach Wise for the Northwestern University Knight Lab
+
+	This Source Code Form is subject to the terms of the Mozilla Public
+	License, v. 2.0. If a copy of the MPL was not distributed with this
+	file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+*/
+/* Includes
+================================================== */
+/*	Mixins.less
+	Snippets of reusable CSS to develop faster and keep code readable
+ * ----------------------------------------------------------------- */
+/*	Reset
+------------------------------------------------------------------------------------------- */
+.tl-storyjs {
+  /*	Reset tags and common classes
+		Display in IE6-9 and FF3
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Prevents modern browsers from displaying 'audio' without controls
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Prevents sub and sup affecting line-height in all browsers
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Img border in a's and image quality
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+  /*	Forms
+		Based on: http://github.com/necolas/normalize.css
+	------------------------------------------------------------------------------------------- */
+}
+.tl-storyjs div * {
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.tl-storyjs h1,
+.tl-storyjs h2,
+.tl-storyjs h3,
+.tl-storyjs h4,
+.tl-storyjs h5,
+.tl-storyjs h6,
+.tl-storyjs p,
+.tl-storyjs blockquote,
+.tl-storyjs pre,
+.tl-storyjs a,
+.tl-storyjs abbr,
+.tl-storyjs acronym,
+.tl-storyjs address,
+.tl-storyjs cite,
+.tl-storyjs code,
+.tl-storyjs del,
+.tl-storyjs dfn,
+.tl-storyjs em,
+.tl-storyjs img,
+.tl-storyjs q,
+.tl-storyjs s,
+.tl-storyjs samp,
+.tl-storyjs small,
+.tl-storyjs strike,
+.tl-storyjs strong,
+.tl-storyjs sub,
+.tl-storyjs sup,
+.tl-storyjs tt,
+.tl-storyjs var,
+.tl-storyjs dd,
+.tl-storyjs dl,
+.tl-storyjs dt,
+.tl-storyjs li,
+.tl-storyjs ol,
+.tl-storyjs ul,
+.tl-storyjs fieldset,
+.tl-storyjs form,
+.tl-storyjs label,
+.tl-storyjs legend,
+.tl-storyjs button,
+.tl-storyjs table,
+.tl-storyjs caption,
+.tl-storyjs tbody,
+.tl-storyjs tfoot,
+.tl-storyjs thead,
+.tl-storyjs tr,
+.tl-storyjs th,
+.tl-storyjs td,
+.tl-storyjs .tl-container,
+.tl-storyjs .content-container,
+.tl-storyjs .media,
+.tl-storyjs .text,
+.tl-storyjs .tl-slider,
+.tl-storyjs .slider,
+.tl-storyjs .date,
+.tl-storyjs .title,
+.tl-storyjs .message,
+.tl-storyjs .map,
+.tl-storyjs .credit,
+.tl-storyjs .caption,
+.tl-storyjs .tl-feedback,
+.tl-storyjs .tl-feature,
+.tl-storyjs .toolbar,
+.tl-storyjs .marker,
+.tl-storyjs .dot,
+.tl-storyjs .line,
+.tl-storyjs .flag,
+.tl-storyjs .time,
+.tl-storyjs .era,
+.tl-storyjs .major,
+.tl-storyjs .minor,
+.tl-storyjs .tl-navigation,
+.tl-storyjs .start,
+.tl-storyjs .active {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 100%;
+  line-height: 1;
+  font-family: inherit;
+  width: auto;
+  float: none;
+}
+.tl-storyjs h1,
+.tl-storyjs h2,
+.tl-storyjs h3,
+.tl-storyjs h4,
+.tl-storyjs h5,
+.tl-storyjs h6 {
+  clear: none;
+}
+.tl-storyjs table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.tl-storyjs ol,
+.tl-storyjs ul {
+  list-style: none;
+}
+.tl-storyjs q:before,
+.tl-storyjs q:after,
+.tl-storyjs blockquote:before,
+.tl-storyjs blockquote:after {
+  content: "";
+}
+.tl-storyjs a:focus {
+  outline: thin dotted;
+}
+.tl-storyjs a:hover,
+.tl-storyjs a:active {
+  outline: 0;
+}
+.tl-storyjs article,
+.tl-storyjs aside,
+.tl-storyjs details,
+.tl-storyjs figcaption,
+.tl-storyjs figure,
+.tl-storyjs footer,
+.tl-storyjs header,
+.tl-storyjs hgroup,
+.tl-storyjs nav,
+.tl-storyjs section {
+  display: block;
+}
+.tl-storyjs audio,
+.tl-storyjs canvas,
+.tl-storyjs video {
+  display: inline-block;
+}
+.tl-storyjs audio:not([controls]) {
+  display: none;
+}
+.tl-storyjs div {
+  max-width: none;
+}
+.tl-storyjs sub,
+.tl-storyjs sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+.tl-storyjs sup {
+  top: -0.5em;
+}
+.tl-storyjs sub {
+  bottom: -0.25em;
+}
+.tl-storyjs img {
+  border: 0;
+  -ms-interpolation-mode: bicubic;
+}
+.tl-storyjs button,
+.tl-storyjs input,
+.tl-storyjs select,
+.tl-storyjs textarea {
+  font-size: 100%;
+  margin: 0;
+  vertical-align: baseline;
+  *vertical-align: middle;
+}
+.tl-storyjs button,
+.tl-storyjs input {
+  line-height: normal;
+  *overflow: visible;
+}
+.tl-storyjs button::-moz-focus-inner,
+.tl-storyjs input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+.tl-storyjs button,
+.tl-storyjs input[type="button"],
+.tl-storyjs input[type="reset"],
+.tl-storyjs input[type="submit"] {
+  cursor: pointer;
+  -webkit-appearance: button;
+}
+.tl-storyjs input[type="search"] {
+  -webkit-appearance: textfield;
+  -webkit-box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+.tl-storyjs input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.tl-storyjs textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+.tl-timeline {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  /* VCard
+	================================================== */
+}
+.tl-timeline h1,
+.tl-timeline h2,
+.tl-timeline h3,
+.tl-timeline h4,
+.tl-timeline h5,
+.tl-timeline h6 {
+  color: #000;
+}
+.tl-timeline h1,
+.tl-timeline h2,
+.tl-timeline h3 {
+  font-size: 28px;
+  line-height: 28px;
+}
+.tl-timeline h1 small,
+.tl-timeline h2 small,
+.tl-timeline h3 small {
+  font-size: 24px;
+  line-height: 24px;
+}
+.tl-timeline h4,
+.tl-timeline h5,
+.tl-timeline h6 {
+  font-size: 24px;
+  line-height: 24px;
+  margin-bottom: 0px;
+}
+.tl-timeline h4 small,
+.tl-timeline h5 small,
+.tl-timeline h6 small {
+  font-size: 15px;
+  line-height: 15px;
+}
+.tl-timeline h2.tl-headline-title {
+  font-size: 38px;
+  line-height: 38px;
+}
+.tl-timeline h2.tl-headline-title small {
+  display: block;
+  margin-top: 5px;
+  font-size: 24px;
+  line-height: 24px;
+}
+.tl-timeline h2 {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+.tl-timeline p {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.42857143;
+  color: #666666;
+}
+.tl-timeline p.lead {
+  font-size: 24px;
+}
+.tl-timeline p a {
+  /*
+			color: lighten(@color-dark, 40%);
+			text-decoration: none;
+			background-image: -moz-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: -webkit-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: -o-linear-gradient(top, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-image: linear-gradient(to bottom, fade(lighten(@color-dark, 40%), 0%) 50%, fade(lighten(@color-dark, 40%), 60%) 50%);
+			background-repeat: repeat-x;
+			background-size: 2px 2px;
+			background-position: 0 @base-font-size+2;
+			text-shadow: -2px -1px 0 white, 2px -1px 0 white, -2px 1px 0 white, 2px 1px 0 white;
+			&:hover,
+			&:focus {
+				color:@color-theme;
+				text-decoration: none;
+			}
+			*/
+  color: #666666;
+  text-decoration: underline;
+}
+.tl-timeline p a:hover,
+.tl-timeline p a:focus {
+  color: #c34528;
+}
+@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi) {
+  .tl-timeline p a {
+    text-decoration: underline;
+    background-image: none;
+    text-shadow: none;
+  }
+  .tl-timeline p a:hover,
+  .tl-timeline p a:focus {
+    color: #c34528;
+    text-decoration: underline;
+  }
+}
+.tl-timeline b,
+.tl-timeline strong {
+  font-weight: bold;
+}
+.tl-timeline i,
+.tl-timeline em {
+  font-style: italic;
+}
+.tl-timeline a {
+  text-decoration: none;
+  color: #c34528;
+}
+.tl-timeline a:hover {
+  text-decoration: underline;
+  color: #6e2717;
+}
+.tl-timeline .tl-caption,
+.tl-timeline .tl-credit,
+.tl-timeline .tl-slidenav-next,
+.tl-timeline .tl-slidenav-previous {
+  font-size: 11px;
+  line-height: 11px;
+}
+.tl-timeline .tl-caption a,
+.tl-timeline .tl-credit a,
+.tl-timeline .tl-slidenav-next a,
+.tl-timeline .tl-slidenav-previous a {
+  color: #000;
+}
+.tl-timeline .tl-makelink {
+  word-break: break-all;
+  word-break: break-word;
+  -webkit-hyphens: auto;
+  -moz-hyphens: auto;
+  hyphens: auto;
+}
+.tl-timeline blockquote,
+.tl-timeline blockquote p {
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  color: #999999;
+  font-size: 24px;
+  line-height: 24px;
+  text-align: left;
+  background: transparent;
+  border: 0px;
+  padding: 0px;
+}
+.tl-timeline blockquote cite,
+.tl-timeline blockquote p cite {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 11px;
+  color: #666666;
+  display: block;
+  text-align: right;
+  font-style: normal;
+}
+.tl-timeline blockquote cite:before,
+.tl-timeline blockquote p cite:before {
+  content: "\2014";
+}
+.tl-timeline blockquote p:before {
+  content: open-quote;
+ …

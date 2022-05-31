@@ -7,13 +7,11 @@ import { easeInSpline } from "../animation/Ease";
 import * as DOM from "../dom/DOM"
 
 /**
- * A TimeEra represents a span of time marked along the edge of the time 
- * slider. It must have a 
+ * A TimeEra represents a span of time marked along the edge of the time
+ * slider. It must have a
  */
 export class TimeEra {
     constructor(start_date, end_date, headline, options) {
-
-
         this.start_date = start_date
         this.end_date = end_date
         this.headline = headline
@@ -58,8 +56,6 @@ export class TimeEra {
 
         this._initLayout();
         this._initEvents();
-
-
     }
 
     /*	Adding, Hiding, Showing etc
@@ -106,7 +102,7 @@ export class TimeEra {
     }
 
     setHeight(h) {
-        var text_line_height = 12,
+        let text_line_height = 12,
             text_lines = 1;
 
         this._el.content_container.style.height = h + "px";
@@ -120,7 +116,7 @@ export class TimeEra {
                 text_lines = 1;
             }
             this._text.className = "tl-headline";
-            this._text.style.webkitLineClamp = text_lines;
+            this._text.style.webkitLineClamp = `${text_lines}`;
         } else {
             text_lines = h / text_line_height;
             if (text_lines > 1) {

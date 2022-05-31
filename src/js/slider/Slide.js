@@ -87,8 +87,6 @@ export class Slide {
 
         this._initLayout();
         this._initEvents();
-
-
     }
 
     /*	Adding, Hiding, Showing etc
@@ -128,7 +126,7 @@ export class Slide {
     }
 
     updateDisplay(width, height, layout) {
-        var content_width,
+        let content_width,
             content_padding_left = this.options.slide_padding_lr,
             content_padding_right = this.options.slide_padding_lr;
 
@@ -144,7 +142,7 @@ export class Slide {
             content_padding_left = 0;
             content_padding_right = 0;
             content_width = this.options.width;
-        } else if (layout == "landscape") {
+        } else if (layout === "landscape") {
 
         } else if (this.options.width <= this.options.skinny_size) {
             content_padding_left = 50;
@@ -183,16 +181,14 @@ export class Slide {
     }
 
     loadMedia() {
-        var self = this;
-
         if (this._media && !this._state.loaded) {
             this._media.loadMedia();
             this._state.loaded = true;
         }
 
         if (this._background_media && !this._background_media._state.loaded) {
-            this._background_media.on("loaded", function() {
-                self._updateBackgroundDisplay();
+            this._background_media.on("loaded", () => {
+                this._updateBackgroundDisplay();
             });
             this._background_media.loadMedia();
         }
@@ -254,7 +250,7 @@ export class Slide {
         // Style Slide Background
         if (this.data.background) {
             if (this.data.background.url) {
-                var media_type = lookupMediaType(this.data.background, true);
+                let media_type = lookupMediaType(this.data.background, true);
                 if (media_type) {
                     this._background_media = new media_type.cls(this.data.background, { background: 1 });
 
@@ -281,7 +277,7 @@ export class Slide {
 
 
         // Determine Assets for layout and loading
-        if (this.data.media && this.data.media.url && this.data.media.url != "") {
+        if (this.data.media && this.data.media.url && this.data.media.url !== "") {
             this.has.media = true;
         }
         if (this.data.text && this.data.text.text) {
