@@ -10,7 +10,7 @@ import * as Browser from '../core/Browser'
 import { lookupMediaType } from '../media/MediaType'
 import { Text } from '../media/Media'
 
-export const emptyEvent = {
+export const emptyEvent = () => ({
     unique_id: null,
     background: null,
     start_date: null,
@@ -19,7 +19,7 @@ export const emptyEvent = {
     text: null,
     media: null,
     autolink: true,
-}
+})
 
 export class Slide {
     constructor (data, options, title_slide, language) {
@@ -62,7 +62,7 @@ export class Slide {
         this.has.title = title_slide
 
         // Data
-        this.data = emptyEvent
+        this.data = emptyEvent()
 
         // Options
         this.options = {
@@ -98,10 +98,6 @@ export class Slide {
             duration: this.options.duration,
             easing: this.options.ease,
         })
-    }
-
-    hide () {
-
     }
 
     setActive (is_active) {
@@ -210,7 +206,6 @@ export class Slide {
     }
 
     getFormattedDate () {
-
         if (trim(this.data.display_date).length > 0) {
             return this.data.display_date
         }

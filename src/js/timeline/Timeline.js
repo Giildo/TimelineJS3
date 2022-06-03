@@ -13,7 +13,7 @@ import * as Browser from '../core/Browser'
 import { Animate } from '../animation/Animate'
 import { StorySlider } from '../slider/StorySlider'
 import { SlideNav } from '../slider/SlideNav'
-import { emptyEvent, Slide } from '../slider/Slide'
+import { Slide } from '../slider/Slide'
 import { MenuBar } from '../ui/MenuBar'
 import { loadCSS, loadJS } from '../core/Load'
 

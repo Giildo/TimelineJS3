@@ -111,7 +111,7 @@ export class StorySlider {
     }
 
     _createSlide (d, title_slide, n) {
-        var slide = new Slide(d, this.options, title_slide, this.getLanguage())
+        let slide = new Slide(d, this.options, title_slide, this.getLanguage())
         this._addSlide(slide)
         if (n < 0) {
             this._slides.push(slide)
@@ -383,7 +383,6 @@ export class StorySlider {
     /*	Init
     ================================================== */
     _initLayout () {
-        console.log('init layout')
         addClass(this._el.container, 'tl-storyslider')
 
         // Create Layout
@@ -399,7 +398,6 @@ export class StorySlider {
         // Create Navigation
         this._nav.previous = new SlideNav({ title: 'Previous', description: 'description' }, { direction: 'previous' })
         this._nav.next = new SlideNav({ title: 'Next', description: 'description' }, { direction: 'next' })
-        console.log(this._nav.next)
 
         // add the navigation to the dom
         this._nav.next.addTo(this._el.container)
