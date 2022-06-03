@@ -213,7 +213,11 @@ export class Slide {
 
         if (!this.has.title) {
             if (this.data.end_date) {
-                date_text = ' &mdash; ' + this.data.end_date.getDisplayDate(this.getLanguage())
+                if (this.data.end_date.data.is_today) {
+                    date_text = ' &mdash; &infin;'
+                } else {
+                    date_text = ' &mdash; ' + this.data.end_date.getDisplayDate(this.getLanguage())
+                }
             }
             if (this.data.start_date) {
                 date_text = this.data.start_date.getDisplayDate(this.getLanguage()) + date_text

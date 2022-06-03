@@ -67,6 +67,7 @@ export class TimeMarker {
                 month: today.getMonth() + 1,
                 year: today.getFullYear(),
                 date_obj: today,
+                is_today: true,
             }
 
             this.isTodayEvent = true
