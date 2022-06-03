@@ -18,8 +18,8 @@ const STRIP_MARKUP_FIELDS = {
 }
 
 /**
- * After sanitizing, make sure all <a> tags with 'href' attributes that 
- * don't have a target attribute are set to open in a new ('_blank') 
+ * After sanitizing, make sure all <a> tags with 'href' attributes that
+ * don't have a target attribute are set to open in a new ('_blank')
  * window. Also make sure that all <a> tags which are set to open in a '_blank'
  * window set `rel="noopener"`
  */
@@ -58,7 +58,7 @@ function _process_fields(slide, callback, fieldmap) {
  * Centralize use of HTML sanitizer so that we can enforce common
  * rules. Maybe we would want to push this to Util and unit test
  * but ultimately we're trusting the creators of the library.
- * @param {string} txt 
+ * @param {string} txt
  */
 function _tl_sanitize(txt) {
     return DOMPurify.sanitize(txt, {
@@ -160,7 +160,7 @@ export class TimelineConfig {
 
 
     /**
-     * @returns {boolean} whether or not this config has logged errors.  
+     * @returns {boolean} whether or not this config has logged errors.
      */
     isValid() {
         return this.messages.errors.length == 0;
@@ -171,11 +171,10 @@ export class TimelineConfig {
      * Throws: TLError for any validation problems.
      */
     addEvent(data, defer_sort) {
-        var event_id = this._assignID(data);
+        let event_id = this._assignID(data);
 
         if (typeof(data.start_date) == 'undefined') {
             trace("Missing start date, skipping event")
-            console.log(data)
             return null
                 // throw new TLError("missing_start_date_err", event_id);
         }
@@ -355,10 +354,10 @@ export class TimelineConfig {
     }
 
     /**
-     * Do some simple cleanup for all slides and eras, including sanitizing 
+     * Do some simple cleanup for all slides and eras, including sanitizing
      * HTML input, or stripping markup for fields which are not intended to support
      * it.
-     * @param { Slide | TimeEra } slide 
+     * @param { Slide | TimeEra } slide
      */
     _tidyFields(slide) {
 

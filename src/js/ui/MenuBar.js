@@ -55,17 +55,6 @@ export class MenuBar {
 
 	/*	Public
 	================================================== */
-	show(d) {
-
-		var duration = this.options.duration;
-		if (d) {
-			duration = d;
-		}
-	}
-
-	hide(top) {
-	}
-
 	toogleZoomIn(show) {
 		if (show) {
       removeClass(this._el.button_zoomin,'tl-menubar-button-inactive');

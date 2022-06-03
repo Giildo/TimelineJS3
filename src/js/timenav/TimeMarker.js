@@ -255,7 +255,6 @@ export class TimeMarker {
         this._el.timespan_content = DOM.create('div', 'tl-timemarker-timespan-content', this._el.timespan)
         this._el.content_container = DOM.create('div', 'tl-timemarker-content-container', this._el.container)
 
-        console.log(this.isTodayEvent)
         if (this.isTodayEvent) {
             this._el.timespan_content.className += ' tl-timemarker-timespan-content-today'
         }
