@@ -598,8 +598,11 @@ class Timeline {
             if (!this.options.headless) {
                 this._storyslider.goTo(0)
             } else {
-                this.current_id = this.config.events[0].unique_id
-                this._timenav.goTo(0)
+                this.goToId(
+                  this.config.title
+                  ? this.config.title.unique_id
+                  : this.config.events[0].unique_id,
+                )
                 this._updateNavText()
             }
             this.fire('back_to_start', { unique_id: this.current_id }, this)
@@ -932,7 +935,7 @@ class Timeline {
      */
     _updateNavText () {
         if (this.options.headless) {
-            let id = this._getSlideIndex(this.current_id) + 1
+            let id = this.config.title ? this._getSlideIndex(this.current_id) : this._getSlideIndex(this.current_id) + 1
             if (id >= this.config.events.length) {
                 this._el.next.hide()
             } else {
@@ -947,7 +950,7 @@ class Timeline {
                 )
             }
 
-            id = this._getSlideIndex(this.current_id) - 1
+            id = this.config.title ? this._getSlideIndex(this.current_id) - 2 : this._getSlideIndex(this.current_id) - 1
             if (id < 0) {
                 this._el.previous.hide()
             } else {
