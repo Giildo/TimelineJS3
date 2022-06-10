@@ -632,10 +632,18 @@ class Timeline {
     }
 
     _onStorySliderNext (e) {
+        e.target.dispatchEvent(new CustomEvent('nav-next', {
+            bubbles: true,
+            detail: { event: this.config.events[this._getEventIndex(this.current_id) + 1] },
+        }))
         this.fire('nav_next', e)
     }
 
     _onStorySliderPrevious (e) {
+        e.target.dispatchEvent(new CustomEvent('nav-previous', {
+            bubbles: true,
+            detail: { event: this.config.events[this._getEventIndex(this.current_id) + 1] },
+        }))
         this.fire('nav_previous', e)
     }
 
